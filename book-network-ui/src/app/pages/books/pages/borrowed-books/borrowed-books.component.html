@@ -1,0 +1,123 @@
+<div class="container">
+  <h2>Borrowed Books</h2>
+  <hr>
+  <div #feedbackModal id="feedbackModal" class="modal bg-opacity-25 bg-black">
+    <div *ngIf="selectedBook" class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Return &amp; Share Feedback</h2>
+          <button type="button" class="btn-close" (click)="closeFeedbackModal()"></button>
+        </div>
+        <div class="modal-body row">
+          <div class="col-12 col-lg-6">
+            <div class="row">
+              <strong class="col-1 fs-5">Title</strong>
+              <div class="col-1"></div>
+              <p class="col-10 fs-5">{{ selectedBook?.title }}</p>
+            </div>
+            <div class="row">
+              <strong class="col-1 fs-5">Author</strong>
+              <div class="col-1"></div>
+              <p class="col-10 fs-5">{{ selectedBook?.authorName }}</p>
+            </div>
+            <div class="row">
+              <strong class="col-1 fs-5">ISBN</strong>
+              <div class="col-1"></div>
+              <p class="col-10 fs-5">{{ selectedBook?.isbn }}</p>
+            </div>
+            <div class="row">
+              <strong class="col-1 fs-5">Rating</strong>
+              <div class="col-1"></div>
+              <p class="col-10 fs-5">
+                <rating [rating]="selectedBook.rating || 0"></rating>
+              </p>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="rating" class="form-label">Rating</label>
+                <div class="d-flex gap-2">
+                  <input [(ngModel)]="feedbackRequest.rating" type="range" min="0" max="5" step="0.5" id="rating"
+                         name="rating" class="form-range w-auto flex-fill">
+                  <rating [rating]="feedbackRequest.rating || 0.0" classes="fs-5">{{ feedbackRequest.rating }}</rating>
+                </div>
+              </div>
+              <div class="col-12">
+                <label for="feedback" class="form-label">Feedback</label>
+                <textarea [(ngModel)]="feedbackRequest.comments" name="feedback" id="feedback" rows="4"
+                          class="form-control w-100"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button (click)="returnBook(false);closeFeedbackModal();" type="button" class="btn btn-outline-secondary">Return</button>
+          <button (click)="returnBook(true);closeFeedbackModal();" type="button" class="btn btn-primary">Give Feedback & Return</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="responsive table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">ISBN</th>
+      <th scope="col">Rating</th>
+      <th scope="col"><i class="bi bi-gear"></i></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let book of borrowedBooks.content;let index=index">
+      <td>{{ book.title }}</td>
+      <td>{{ book.authorName }}</td>
+      <td>{{ book.isbn }}</td>
+      <td>{{ book.rating }}</td>
+      <td>{{ index + 1 }}</td>
+      <td>
+        <div class="d-flex gap-2 fs-4">
+          <i (click)="openFeedbackModal(book)" *ngIf="!book.returned" class="bi bi-send text-primary" role="button"></i>
+          <i *ngIf="book.returned" [ngClass]="book.returnApproved ? 'text-success' : 'text-primary'"
+             class="bi bi-send-check-fill"><span *ngIf="!book.returnApproved" class="mx-1 small fs-6">(Waiting for approval)</span></i>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-2">
+    <nav aria-label="Page Navigation">
+      <ul class="pagination">
+        <li class="page-item">
+          <a (click)="goToFirst()" [class.disabled]="isFirstPage" role="button" class="page-link"
+             aria-label="Go to first page">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </a>
+        </li>
+        <li class="page-item">
+          <a (click)="goToPrevious()" [class.disabled]="isFirstPage" role="button" class="page-link"
+             aria-label="Previous">
+            <i class="bi bi-caret-left-fill"></i>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let _ of [].constructor(totalPages);let i=index">
+          <a (click)="goToPage(i)" [class.active]="page==i" role="button" class="page-link" aria-label="page">
+            {{ i + 1 }}
+          </a>
+        </li>
+        <li class="page-item">
+          <a (click)="goToNext()" [class.disabled]="isLastPage" role="button" class="page-link" aria-label="Next">
+            <i class="bi bi-caret-right-fill"></i>
+          </a>
+        </li>
+        <li class="page-item">
+          <a (click)="goToLast()" [class.disabled]="isLastPage" role="button" class="page-link"
+             aria-label="Go to last page">
+            <i class="bi bi-arrow-clockwise"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

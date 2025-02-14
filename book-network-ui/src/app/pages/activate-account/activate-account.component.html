@@ -1,0 +1,26 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="text-center" style="max-width: 500px">
+    <ng-container *ngIf="submitted">
+      <ng-container *ngIf="isOkay">
+        <div class="alert alert-success">
+        <h3 class="my-3 fw-bold">Activation Successful</h3>
+        <button class="btn btn-success" (click)="redirectToLogin()">Go to login.</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!isOkay">
+        <div class="my-3 alert alert-danger">
+          <h3 class="fw-bold">Activation Failed</h3>
+          <h4>{{message}}</h4>
+        <button class="btn btn-danger" (click)="submitted=false">Try again!</button>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!submitted">
+      <h1 class="my-3 fw-bold">Type your activation code</h1>
+      <code-input [isCodeHidden]="false"
+                  [codeLength]="6"
+                  (codeCompleted)="onCodeCompleted($event)">
+      </code-input>
+    </ng-container>
+  </div>
+</div>

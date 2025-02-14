@@ -1,0 +1,28 @@
+services:
+  bsn-postgres:
+    container_name: bsn-postgres
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: 'bsn_db'
+      POSTGRES_USER: 'mohit'
+      POSTGRES_PASSWORD: 'mohit'
+      PGDATA: /var/lib/postgres/data
+    ports:
+      - '5432:5432'
+    networks:
+      - bsn-net
+    volumes:
+      - bsn-vol:/data/postgres
+  bsn-mail:
+    container_name: bsn-mail
+    image: maildev/maildev
+    ports:
+      - '1080:1080'
+      - '1025:1025'
+networks:
+  bsn-net:
+    driver: bridge
+volumes:
+  bsn-vol:
+    driver: local

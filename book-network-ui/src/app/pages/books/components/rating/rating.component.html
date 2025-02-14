@@ -1,0 +1,14 @@
+<div class="rating" [classList]="classes">
+  <ng-container *ngFor="let i of [].constructor(fullStars)">
+    <i class="bi bi-star-fill text-warning"></i>
+  </ng-container>
+  <ng-container *ngIf="hasHalfStar">
+    <i class="bi bi-star-half text-warning"></i>
+  </ng-container>
+  <ng-container *ngFor="let i of [].constructor(emptyStars)">
+    <i class="bi bi-star"></i>
+  </ng-container>
+  <span class="mx-2">
+    <ng-content></ng-content>
+  </span>
+</div>

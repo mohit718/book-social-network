@@ -1,0 +1,29 @@
+<div class="card shadow-sm border-5" [class.border-danger]="book.archived" [class.border-primary-subtle]="book.shareable" style="width: 20vw;height: 100%">
+  <img [src]="bookCover" alt="book-cover" class="card-img-top w-100 object-fit-contain" style="height: 15vw">
+  <div class="card-body pt-3 px-0">
+    <div class="overflow-x-hidden overflow-y-auto px-2">
+    <h5 class="card-title text-nowrap fw-bold mb-3"><i class="bi bi-book-fill"></i> {{book.title}}</h5>
+    <h6 class="card-subtitle text-secondary text-nowrap mb-2"><i class="bi bi-person-vcard"></i> {{book.authorName}}</h6>
+    <h6 class="card-subtitle text-secondary text-nowrap mb-2"><i class="bi bi-code"></i> {{book.isbn}}</h6>
+    <h6 class="card-subtitle text-secondary text-nowrap small"><i class="bi bi-person-fill-lock"></i> Managed by: {{book.owner}}</h6>
+    <hr>
+    <p class="card-text text-wrap  small" style="height: 40px;">{{book.synopsis}}</p>
+    </div>
+  </div>
+  <div class="card-footer d-flex gap-2 justify-content-between align-items-center fs-6">
+    <div class="d-flex gap-2">
+      <rating [rating]="book.rating||0"></rating>
+      <span class="fw-bold" *ngIf="book.rating">{{book.rating}}</span>
+    </div>
+    <div class="d-flex gap-2" *ngIf="!manage">
+      <i (click)="onShowDetails()" class="bi bi-info-circle-fill text-secondary" role="button"></i>
+      <i (click)="onBorrow()" class="bi bi-list-check text-success" role="button"></i>
+      <i (click)="onAddToWaitingList()" class="bi bi-heart-fill text-danger" role="button"></i>
+    </div>
+    <div class="d-flex gap-2" *ngIf="manage">
+      <i (click)="onEdit()" class="bi bi-pencil-fill text-primary" role="button"></i>
+      <i (click)="onShare()" class="bi bi-share-fill text-primary" role="button"></i>
+      <i (click)="onArchive()" class="bi bi-trash3-fill text-danger" role="button"></i>
+    </div>
+  </div>
+</div>
